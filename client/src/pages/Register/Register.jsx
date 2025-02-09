@@ -19,7 +19,7 @@ const Register = () => {
               <div>
                 <p>Already have an account? Please <Link to="/login" className="link">login</Link></p>
               </div>
-              <button className="btn btn-neutral mt-4">Login</button>
+              <button className="btn btn-neutral mt-4">Sign Up</button>
             </fieldset>
           </form>
         </div>
