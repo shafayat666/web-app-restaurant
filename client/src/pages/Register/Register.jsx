@@ -7,28 +7,46 @@ const Register = () => {
   const { signUp } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const data = {
       name: formData.get('name'),
       email: formData.get('email'),
-      password: formData.get('password')
+      password: formData.get('password'),
+      photo: formData.get('photo'),
     };
 
-    signUp(data)
-    .then((result) => {
+    try {
+      const result = await signUp(data);
       const user = result.user;
-      updateProfile(user, {
+      console.log(user);
+
+      await updateProfile(user, {
         displayName: data.name,
-      })
+        photoURL: data.photo,
+      });
+      
       Swal.fire("Succesfully Registered");
       navigate("/");
-    })
-    .catch((error) => {
+    } catch (error) {
       console.log(error);
-    });
+    }
+    // signUp(data)
+    // .then((result) => {
+    //   const user = result.user;
+    //   console.log(user);
+    //   updateProfile(user, {
+    //     displayName: data.name,
+    //     photoURL: data.photo,
+    //   })
+    //   Swal.fire("Succesfully Registered");
+    //   navigate("/");
+    // })
+    // .catch((error) => {
+    //   console.log(error);
+    // });
   }
 
   return (
@@ -42,6 +60,9 @@ const Register = () => {
             <fieldset className="fieldset space-y-4">
               <label className="fieldset-label">Your Name</label>
               <input name="name" type="text" className="input w-full p-3" placeholder="Your Name" />
+
+              <label className="fieldset-label">Photo URL</label>
+              <input name="photo" type="text" className="input w-full p-3" placeholder="Photo URL" />
 
               <label className="fieldset-label">Email</label>
               <input name="email" type="email" className="input w-full p-3" placeholder="Email" />

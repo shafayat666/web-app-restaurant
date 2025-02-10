@@ -27,12 +27,12 @@ const NavBar = () => {
           icon: "success"
         });
         logout()
-        .then(() => {
-          navigate("/login");
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .then(() => {
+            navigate("/login");
+          })
+          .catch((error) => {
+            console.log(error);
+          });
       }
     });
   }
@@ -62,6 +62,10 @@ const NavBar = () => {
           user ?
             <>
               <span className="mr-4">Hello, {user.displayName}</span>
+              <img
+                className="w-10 rounded-full mr-4"
+                alt="Tailwind CSS Navbar component"
+                src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} />
               <button onClick={handleLogOut} className="btn btn-warning">Logout</button>
             </>
             :
