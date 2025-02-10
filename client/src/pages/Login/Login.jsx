@@ -7,7 +7,7 @@ const Login = () => {
   const { login, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
@@ -16,27 +16,26 @@ const Login = () => {
       password: formData.get('password')
     };
 
-    login(data)
-    .then(result => {
-      console.log(result);
-      Swal.fire("Succesfully Logged In");
+    try {
+      const result = await login(data);
+      console.log(result.user);
+      Swal.fire("Successfully Logged In");
       navigate("/");
-    })
-    .catch(error => {
-      console.log(error);
-    }); 
+    } catch (error) {
+      console.error(error);
+    }
   }
 
-  const handleGoogleSignIn = () => {
-    signInwithGoogle()
-    .then(result => {
+
+  const handleGoogleSignIn = async () => {
+    try {
+      const result = await signInwithGoogle();
       console.log(result);
-      Swal.fire("Succesfully Logged In");
+      Swal.fire("Successfully Logged In");
       navigate("/");
-    })
-    .catch(error => {
-      console.log(error);
-    });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
@@ -62,7 +61,6 @@ const Login = () => {
         </div>
       </div>
     </div>
-
   );
 };
 
