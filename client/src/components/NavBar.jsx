@@ -1,11 +1,42 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import useAuth from "../hooks/useAuth";
+import Swal from "sweetalert2";
 
 const NavBar = () => {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
   const links = <>
     <Link className="mr-4" to="/">Home</Link>
     <Link className="mr-4" to="/all-foods">All Foods</Link>
-    <Link className="mr-4" to="/gallery">Gallery</Link> 
+    <Link className="mr-4" to="/gallery">Gallery</Link>
   </>
+
+  const handleLogOut = () => {
+    Swal.fire({
+      title: "Are you sure?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, log me out!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: "Logged Out!",
+          icon: "success"
+        });
+        logout()
+        .then(() => {
+          navigate("/login");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      }
+    });
+  }
+
   return (
     <div className="navbar bg-base-100 shadow-sm">
       <div className="navbar-start">
@@ -27,7 +58,15 @@ const NavBar = () => {
         </ul>
       </div>
       <div className="navbar-end">
-        <Link to="/login" className="btn btn-primary">Login</Link>
+        {
+          user ?
+            <>
+              <span className="mr-4">Hello, {user.displayName}</span>
+              <button onClick={handleLogOut} className="btn btn-warning">Logout</button>
+            </>
+            :
+            <Link to="/login" className="btn btn-primary">Login</Link>
+        }
       </div>
     </div>
   );
