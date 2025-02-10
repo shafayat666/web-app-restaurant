@@ -23,6 +23,7 @@ const Login = () => {
       navigate("/");
     } catch (error) {
       console.error(error);
+      Swal.fire("Invalid Login Credentials");
     }
   }
 
