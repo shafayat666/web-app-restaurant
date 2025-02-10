@@ -1,8 +1,13 @@
+import Banner from "./components/Banner";
+import CustomerReviews from "./components/CustomerReviews";
+import TopFoods from "./components/TopFoods";
 
 const Home = () => {
   return (
     <div>
-      <h1 className="text-3xl">This is the Home Page.</h1>      
+      <Banner />      
+      <TopFoods />
+      <CustomerReviews />
     </div>
   );
 };
