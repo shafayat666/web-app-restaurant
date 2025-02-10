@@ -1,9 +1,10 @@
 import { Link, useNavigate } from "react-router";
+import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
 
 const Login = () => {
-  const { login } = useAuth();
+  const { login, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
 
   const handleSubmit = (event) => {
@@ -25,6 +26,19 @@ const Login = () => {
       console.log(error);
     }); 
   }
+
+  const handleGoogleSignIn = () => {
+    signInwithGoogle()
+    .then(result => {
+      console.log(result);
+      Swal.fire("Succesfully Logged In");
+      navigate("/");
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  }
+
   return (
     <div className="hero flex justify-center items-center">
       <div className="hero-content flex-col w-full max-w-lg">
@@ -39,6 +53,7 @@ const Login = () => {
               <label className="fieldset-label">Password</label>
               <input name="password" type="password" className="input w-full p-3" placeholder="Password" />
               <div className="text-center">
+                <FaGoogle onClick={handleGoogleSignIn} className="text-3xl cursor-pointer" />
                 <p>Don&apos;t have an account? Register <Link to="/register" className="link">here</Link></p>
               </div>
               <button className="btn btn-neutral w-full py-3 mt-4 text-lg">Login</button>
