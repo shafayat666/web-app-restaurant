@@ -10,7 +10,7 @@ const FoodCard = ({ food }) => {
         <p>{description}</p>
         <p>Price: {price}</p>
         <p>Purchase Count: {purchase_count}</p>
-        <Link to={`/food/${_id}`} className="btn btn-primary">View Details</Link>
+        <Link to={`/foods/${_id}`} className="btn btn-primary">View Details</Link>
       </div>
     </div>
   );
