@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FoodCard from "../../shared/FoodCard";
+import { Link } from "react-router";
 
 const TopFoods = () => {
   const [topFoods, setTopFoods] = useState([]);
@@ -27,6 +28,9 @@ const TopFoods = () => {
             <FoodCard key={index} food={food} />
           ))
         }
+      </div>
+      <div className="text-center my-8">
+        <Link to={"/all-foods"} className="btn btn-neutral">View All</Link>
       </div>
     </div>
   );
