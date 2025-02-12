@@ -33,6 +33,7 @@ async function run() {
     // create a database and collection
     const database = client.db("restaurantDB");
     const foodCollection = database.collection("foods");
+    const orderCollection = database.collection("orders");
 
     // loading foods data api
 
@@ -59,6 +60,19 @@ async function run() {
       const result = await foodCollection.findOne(query);
       res.send(result);
     });
+
+    // view my orders
+    app.get("/orders", async (req, res) => {
+      const result = await orderCollection.find({}).toArray();
+      res.send(result);
+    });
+
+    // add to orders collection
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.send(result);
+    })
 
 
 

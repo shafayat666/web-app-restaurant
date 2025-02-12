@@ -10,7 +10,7 @@ const TopFoods = () => {
   useEffect(() => {
     axios.get("http://localhost:3000/top-foods")
       .then(response => {
-        console.log(response.data);
+        // console.log(response.data);
         setTopFoods(response.data);
       })
       .catch(error => {
