@@ -1,15 +1,9 @@
-import { useLoaderData } from "react-router";
-import { useState } from "react";
+import { Link, useLoaderData } from "react-router";
 
 const FoodDetails = () => {
   const food = useLoaderData();
-  const { name, image, category, quantity, price, addBy, origin, description, purchase_count } = food;
-  const [count, setCount] = useState(purchase_count);
-
-  const handlePurchase = () => {
-    setCount(count + 1);
-    // Add logic to update purchase count in the database if needed
-  };
+  const { _id, name, image, category, quantity, price, addBy, origin, description } = food;
+  
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg">
@@ -26,16 +20,15 @@ const FoodDetails = () => {
           <p className="text-lg"><strong>Quantity:</strong> {quantity}</p>
           <p className="text-lg"><strong>Price:</strong> ${price}</p>
           <p className="text-lg"><strong>Added by:</strong> {addBy.name} ({addBy.email})</p>
-          <p className="text-lg"><strong>Purchase Count:</strong> {count}</p>
           <p className="text-lg"><strong>Description:</strong> {description}</p>
 
           {/* Purchase Button */}
-          <button
-            onClick={handlePurchase}
+          <Link
+            to={`/food-purchase/${_id}`}
             className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
           >
             Purchase
-          </button>
+          </Link>
         </div>
       </div>
     </div>
