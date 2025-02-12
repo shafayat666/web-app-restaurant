@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
@@ -6,6 +6,8 @@ import Swal from "sweetalert2";
 const Login = () => {
   const { login, signInwithGoogle } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state || "/";
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -20,20 +22,19 @@ const Login = () => {
       const result = await login(data);
       console.log(result.user);
       Swal.fire("Successfully Logged In");
-      navigate("/");
+      navigate(from);
     } catch (error) {
       console.error(error);
       Swal.fire("Invalid Login Credentials");
     }
   }
 
-
   const handleGoogleSignIn = async () => {
     try {
       const result = await signInwithGoogle();
       console.log(result);
       Swal.fire("Successfully Logged In");
-      navigate("/");
+      navigate(from);
     } catch (error) {
       console.error(error);
     }
