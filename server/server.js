@@ -82,6 +82,14 @@ async function run() {
       res.send(result);
     })
 
+    // update food
+    app.patch("/foods/:id", async (req, res) => {
+      const { id } = req.params;
+      const filter = { _id: new ObjectId(id) };
+      const data = req.body;
+      const result = await foodCollection.updateOne(filter, { $set: data });
+      res.send(result);
+    });
 
 
   } finally {

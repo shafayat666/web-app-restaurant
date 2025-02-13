@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 const FoodPurchase = () => {
   const { user } = useAuth();
   const food = useLoaderData();
-  const { _id, name, quantity, price } = food;
+  const { name, quantity, price } = food;
   const currentDate = new Date().toISOString().split("T")[0];
 
   const handleSubmit = (event) => {

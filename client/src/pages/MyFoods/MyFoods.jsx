@@ -57,7 +57,7 @@ const MyFoods = () => {
             </td>
             <td>{food.description}</td>
             <th>
-              <Link className="btn btn-info">Update</Link>
+              <Link to={`/update-food/${food._id}`} className="btn btn-info">Update</Link>
             </th>
           </tr>)
           }
