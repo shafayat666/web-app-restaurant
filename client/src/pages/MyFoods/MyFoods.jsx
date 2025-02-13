@@ -9,7 +9,7 @@ const MyFoods = () => {
   const [myFoods, setMyFoods] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/my-foods?email=admin@gmail.com`)
+    axios.get(`http://localhost:3000/my-foods?email=${user.email}`)
     .then(response => {
       console.log(response.data);
       setMyFoods(response.data);

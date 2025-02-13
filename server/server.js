@@ -82,6 +82,13 @@ async function run() {
       res.send(result);
     })
 
+    // add food
+    app.post("/foods", async (req, res) => {
+      const food = req.body;
+      const result = await foodCollection.insertOne(food);
+      res.send(result);
+    });
+    
     // update food
     app.patch("/foods/:id", async (req, res) => {
       const { id } = req.params;
