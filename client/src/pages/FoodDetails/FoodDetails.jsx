@@ -1,9 +1,22 @@
+import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router";
+import Swal from "sweetalert2";
 
 const FoodDetails = () => {
   const food = useLoaderData();
   const { _id, name, image, category, quantity, price, addBy, origin, description } = food;
+  const [available, setAvailable] = useState(true);
   
+  useEffect(() => {
+    if (quantity === 0) {
+      setAvailable(false);
+      Swal.fire({
+        icon: "error",
+        title: "Out of Stock",
+        text: "This food item is currently unavailable.",
+      });
+    }
+  }, [quantity]);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg">
@@ -25,7 +38,7 @@ const FoodDetails = () => {
           {/* Purchase Button */}
           <Link
             to={`/food-purchase/${_id}`}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-300"
+            className={`btn ${available ? "btn-primary" : "btn-disabled"}`}
           >
             Purchase
           </Link>
