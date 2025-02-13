@@ -8,6 +8,7 @@ import App from "../App";
 import FoodDetails from "../pages/FoodDetails/FoodDetails";
 import FoodPurchase from "../pages/FoodPurchase/FoodPurchase";
 import PrivateRoute from "./PrivateRoute";
+import MyFoods from "../pages/MyFoods/MyFoods";
 
 const router = createBrowserRouter([
   {
@@ -44,6 +45,10 @@ const router = createBrowserRouter([
       {
         path: "/gallery",
         element: <Gallery />,
+      },
+      {
+        path: "/my-foods",
+        element: <PrivateRoute><MyFoods /></PrivateRoute>
       },
     ],
   },

@@ -10,6 +10,7 @@ const NavBar = () => {
     <Link className="mr-4" to="/">Home</Link>
     <Link className="mr-4" to="/all-foods">All Foods</Link>
     <Link className="mr-4" to="/gallery">Gallery</Link>
+    {user && <Link className="mr-4" to="/my-foods">My Foods</Link>}
   </>
 
   const handleLogOut = () => {
