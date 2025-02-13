@@ -67,6 +67,14 @@ async function run() {
       res.send(result);
     });
 
+    // load my-foods
+    app.get("/my-foods", async (req, res) => {
+      const email = req.query.email;
+      const query = { "addBy.email":  email };
+      const result = await foodCollection.find(query).toArray();
+      res.send(result);
+    });
+
     // add to orders collection
     app.post("/orders", async (req, res) => {
       const order = req.body;
