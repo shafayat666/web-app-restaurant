@@ -35,8 +35,7 @@ async function run() {
     const foodCollection = database.collection("foods");
     const orderCollection = database.collection("orders");
 
-    // loading foods data api
-
+    // LOADING FOODS DATA API
     // load all foods
     app.get("/foods", async (req, res) => {
       const result = await foodCollection.find({}).toArray();
@@ -61,12 +60,6 @@ async function run() {
       res.send(result);
     });
 
-    // view my orders
-    app.get("/orders", async (req, res) => {
-      const result = await orderCollection.find({}).toArray();
-      res.send(result);
-    });
-
     // load my-foods
     app.get("/my-foods", async (req, res) => {
       const email = req.query.email;
@@ -74,13 +67,6 @@ async function run() {
       const result = await foodCollection.find(query).toArray();
       res.send(result);
     });
-
-    // add to orders collection
-    app.post("/orders", async (req, res) => {
-      const order = req.body;
-      const result = await orderCollection.insertOne(order);
-      res.send(result);
-    })
 
     // add food
     app.post("/foods", async (req, res) => {
@@ -95,6 +81,31 @@ async function run() {
       const filter = { _id: new ObjectId(id) };
       const data = req.body;
       const result = await foodCollection.updateOne(filter, { $set: data });
+      res.send(result);
+    });
+
+
+    // ORDER API
+    // view my orders
+    app.get("/orders", async (req, res) => {
+      const email = req.query.email;
+      const query = { buyerEmail: email };
+      const result = await orderCollection.find(query).toArray();
+      res.send(result);
+    });
+
+    // add to orders collection
+    app.post("/orders", async (req, res) => {
+      const order = req.body;
+      const result = await orderCollection.insertOne(order);
+      res.send(result);
+    });
+
+    // delete order
+    app.delete("/orders/:id", async (req, res) => {
+      const { id } = req.params;
+      const query = { _id: new ObjectId(id) };
+      const result = await orderCollection.deleteOne(query);
       res.send(result);
     });
 

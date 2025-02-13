@@ -1,13 +1,15 @@
-import { useLoaderData } from "react-router";
+import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
 import axios from "axios";
 import Swal from "sweetalert2";
+import moment from "moment/moment";
 
 const FoodPurchase = () => {
   const { user } = useAuth();
   const food = useLoaderData();
   const { name, quantity, price } = food;
-  const currentDate = new Date().toISOString().split("T")[0];
+  const currentDate = moment().format('MMMM Do YYYY, h:mm:ss a');
+  const navigate = useNavigate();
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,6 +31,7 @@ const FoodPurchase = () => {
       .then(response => {
         console.log(response.data);
         Swal.fire("Purchase Confirmed");
+        navigate(`/orders`);
       })
       .catch(error => {
         console.error(error);
