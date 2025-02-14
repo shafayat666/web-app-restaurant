@@ -51,12 +51,12 @@ const FoodPurchase = () => {
 
         <div>
           <label className="block font-medium text-gray-700 dark:text-gray-300">Price</label>
-          <input type="number" name="price" defaultValue={price} className="input-field w-full" />
+          <input type="number" name="price" value={price} className="input-field w-full" />
         </div>
 
         <div>
           <label className="block font-medium text-gray-700 dark:text-gray-300">Quantity</label>
-          <input type="number" name="quantity" defaultValue={quantity} className="input-field w-full" />
+          <input type="number" name="quantity" defaultValue={quantity} min={1} max={quantity} className="input-field w-full" />
         </div>
 
         <div>

@@ -1,11 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "react-router";
 import Swal from "sweetalert2";
+import useAuth from "../../hooks/useAuth";
 
 const FoodDetails = () => {
+  const { user } = useAuth();
   const food = useLoaderData();
   const { _id, name, image, category, quantity, price, addBy, origin, description } = food;
   const [available, setAvailable] = useState(true);
+
+  const addEmail = addBy.email;
+
+  // console.log(user?.email, addEmail);
   
   useEffect(() => {
     if (quantity === 0) {
@@ -16,7 +22,18 @@ const FoodDetails = () => {
         text: "This food item is currently unavailable.",
       });
     }
-  }, [quantity]);
+
+    if (user?.email === addEmail) {
+      console.log("I am being called");
+      setAvailable(false);
+      Swal.fire({
+        icon: "error",
+        title: "Invalid Action",
+        text: "You cannot purchase your own food item.",
+      });
+    }
+
+  }, [quantity, user, addEmail]);
 
   return (
     <div className="max-w-4xl mx-auto p-6 bg-gray-100 dark:bg-gray-800 rounded-lg shadow-lg">
