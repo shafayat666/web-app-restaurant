@@ -114,10 +114,20 @@ const NavBar = () => {
           user ?
             <>
               <span className="mr-4">Hello, {user.displayName}</span>
-              <img
-                className="w-10 rounded-full mr-4"
-                alt="Tailwind CSS Navbar component"
-                src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} />
+              <div className="dropdown dropdown-end">
+                <div tabIndex={0} role="button">
+                  <img
+                    className="w-10 rounded-full mr-4"
+                    alt="Tailwind CSS Navbar component"
+                    src={user.photoURL || "https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp"} />
+                </div>
+                <ul tabIndex={0} className="menu dropdown-content bg-base-100 rounded-box z-1 w-52 p-2 shadow-sm">
+                  <li><Link to="/my-foods">My Foods</Link></li>
+                  <li><Link to="/add-food">Add Food</Link></li>
+                  <li><Link to="/orders">My Orders</Link></li>
+                </ul>
+              </div>
+
               <button onClick={handleLogOut} className="btn btn-warning">Logout</button>
             </>
             :
