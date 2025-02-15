@@ -1,5 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import jwt from 'jsonwebtoken';
+import cookieParser from 'cookie-parser';
 import { MongoClient, ObjectId, ServerApiVersion } from 'mongodb';
 import dotenv from 'dotenv';
 dotenv.config();
@@ -9,7 +11,28 @@ const PORT = process.env.PORT || 3000;
 
 // middleware
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(cors({
+  origin: ["http://localhost:5173"],
+  credentials: true,
+}));
+
+const veryfyToken = (req, res, next) => {
+  const token = req.cookies?.token;
+
+  if (!token) {
+    return res.status(401).send({message: "Unauthorized Access"});
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
+    if (err) {
+      return res.status(401).send({message: "Unauthorized Access"});
+    }
+
+    next();
+  })
+}
+
 
 // const uri = "mongodb+srv://<db_username>:<db_password>@cluster0.hjueq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.hjueq.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
@@ -34,6 +57,20 @@ async function run() {
     const database = client.db("restaurantDB");
     const foodCollection = database.collection("foods");
     const orderCollection = database.collection("orders");
+
+
+    // jwt token
+    app.post("/jwt", async (req, res) => {
+      const user = req.body;
+      const token = jwt.sign(user, process.env.JWT_SECRET_KEY, { expiresIn: "5h" });
+      res
+      .cookie("token", token, {
+        httpOnly: true,
+        secure: false, // set to true for production
+      })
+      .send({ message: "Successfully Logged In" });
+    })
+
 
     // LOADING FOODS DATA API
     // load all foods
@@ -87,7 +124,8 @@ async function run() {
 
     // ORDER API
     // view my orders
-    app.get("/orders", async (req, res) => {
+    app.get("/orders", veryfyToken, async (req, res) => {
+      // console.log(req.cookies);
       const email = req.query.email;
       const query = { buyerEmail: email };
       const result = await orderCollection.find(query).toArray();

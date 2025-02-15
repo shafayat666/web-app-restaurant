@@ -41,7 +41,7 @@ const Order = () => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/orders?email=${user.email}`)
+    axios.get(`http://localhost:3000/orders?email=${user.email}`, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         setMyOrders(response.data);
