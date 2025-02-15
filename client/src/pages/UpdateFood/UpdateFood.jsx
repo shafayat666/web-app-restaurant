@@ -26,7 +26,7 @@ const UpdateFood = () => {
       description: formData.get("description"),
     }
 
-    axios.patch(`http://localhost:3000/foods/${_id}`, data)
+    axios.patch(`http://localhost:3000/foods/${_id}`, data, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         Swal.fire("Food Updated");

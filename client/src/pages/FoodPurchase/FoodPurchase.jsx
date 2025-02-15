@@ -27,7 +27,7 @@ const FoodPurchase = () => {
       buyingDate: currentDate,
     }
 
-    axios.post(`http://localhost:3000/orders`, data)
+    axios.post(`http://localhost:3000/orders`, data, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         Swal.fire("Purchase Confirmed");

@@ -25,7 +25,7 @@ const AddFood = () => {
       description: formData.get("description"),
     }
 
-    axios.post(`http://localhost:3000/foods`, data)
+    axios.post(`http://localhost:3000/foods`, data, {withCredentials: true})
       .then(response => {
         console.log(response.data);
         Swal.fire("Food Added");

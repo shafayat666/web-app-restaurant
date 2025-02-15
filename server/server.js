@@ -21,14 +21,15 @@ const veryfyToken = (req, res, next) => {
   const token = req.cookies?.token;
 
   if (!token) {
-    return res.status(401).send({message: "Unauthorized Access"});
+    return res.status(401).send({ message: "Unauthorized Access" });
   }
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decoded) => {
     if (err) {
-      return res.status(401).send({message: "Unauthorized Access"});
+      return res.status(401).send({ message: "Unauthorized Access" });
     }
 
+    req.user = decoded;
     next();
   })
 }
@@ -64,11 +65,11 @@ async function run() {
       const user = req.body;
       const token = jwt.sign(user, process.env.JWT_SECRET_KEY, { expiresIn: "5h" });
       res
-      .cookie("token", token, {
-        httpOnly: true,
-        secure: false, // set to true for production
-      })
-      .send({ message: "Successfully Logged In" });
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: false, // set to true for production
+        })
+        .send({ message: "Successfully Logged In" });
     })
 
 
@@ -82,9 +83,9 @@ async function run() {
     // load top 6 foods
     app.get("/top-foods", async (req, res) => {
       const result = await foodCollection.find()
-      .sort({purchase_count: -1})
-      .limit(6)
-      .toArray();
+        .sort({ purchase_count: -1 })
+        .limit(6)
+        .toArray();
 
       res.send(result);
     })
@@ -98,22 +99,34 @@ async function run() {
     });
 
     // load my-foods
-    app.get("/my-foods", async (req, res) => {
+    app.get("/my-foods", veryfyToken, async (req, res) => {
+      if (req.user.email !== req.query.email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      } 
+
       const email = req.query.email;
-      const query = { "addBy.email":  email };
+      const query = { "addBy.email": email };
       const result = await foodCollection.find(query).toArray();
       res.send(result);
     });
 
     // add food
-    app.post("/foods", async (req, res) => {
+    app.post("/foods",veryfyToken,  async (req, res) => {
+      if(req.user.email !== req.body.addBy.email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
       const food = req.body;
       const result = await foodCollection.insertOne(food);
       res.send(result);
     });
-    
+
     // update food
-    app.patch("/foods/:id", async (req, res) => {
+    app.patch("/foods/:id", veryfyToken, async (req, res) => {
+      if(req.user.email !== req.body.addBy.email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
       const { id } = req.params;
       const filter = { _id: new ObjectId(id) };
       const data = req.body;
@@ -127,13 +140,21 @@ async function run() {
     app.get("/orders", veryfyToken, async (req, res) => {
       // console.log(req.cookies);
       const email = req.query.email;
+      if (req.user.email !== email) {
+        return res.status(403).send({ message: "Forbidden Access" });
+      }
+
       const query = { buyerEmail: email };
       const result = await orderCollection.find(query).toArray();
       res.send(result);
     });
 
     // add to orders collection
-    app.post("/orders", async (req, res) => {
+    app.post("/orders", veryfyToken, async (req, res) => {
+      if (req.user.email !== req.body.buyerEmail) {
+        return res.status(403).send({ message: "Forbidden Access" })
+      }
+
       const order = req.body;
       const result = await orderCollection.insertOne(order);
       res.send(result);
