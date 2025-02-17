@@ -60,7 +60,7 @@ async function run() {
     const orderCollection = database.collection("orders");
 
 
-    // jwt token
+    // JWT API
     app.post("/jwt", async (req, res) => {
       const user = req.body;
       const token = jwt.sign(user, process.env.JWT_SECRET_KEY, { expiresIn: "5h" });
@@ -70,6 +70,15 @@ async function run() {
           secure: false, // set to true for production
         })
         .send({ message: "Successfully Logged In" });
+    })
+
+    app.post("/logout", (req, res) => {
+      res
+      .clearCookie("token", {
+        httpOnly: true,
+        secure: false, // set to true for production
+      })
+      .send({ message: "Successfully Logged Out" });
     })
 
 

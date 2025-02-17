@@ -2,7 +2,6 @@ import { Link, useLocation, useNavigate } from "react-router";
 import { FaGoogle } from "react-icons/fa";
 import useAuth from "../../hooks/useAuth";
 import Swal from "sweetalert2";
-import axios from "axios";
 
 const Login = () => {
   const { login, signInwithGoogle } = useAuth();
@@ -20,16 +19,8 @@ const Login = () => {
     };
 
     try {
-      const result = await login(data);
+      await login(data);
       // console.log(result.user);
-      const user = { email: result.user.email };
-      await axios.post("http://localhost:3000/jwt", user, {withCredentials: true})
-        .then(response => {
-          console.log(response.data);
-        })
-        .catch(error => {
-          console.error(error);
-        });
 
       Swal.fire("Successfully Logged In");
       navigate(from);
