@@ -2,7 +2,7 @@ import { createContext, useEffect, useState } from "react";
 import PropTypes from 'prop-types';
 import { createUserWithEmailAndPassword, GoogleAuthProvider, onAuthStateChanged, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import auth from "../../firebase.config";
-import useAxiosSecure from "../hooks/useAxiosSecure";
+import axios from "axios";
 
 export const AuthContext = createContext(null);
 const googleProvider = new GoogleAuthProvider();
@@ -10,7 +10,6 @@ const googleProvider = new GoogleAuthProvider();
 const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const axiosInstance = useAxiosSecure();
 
   const signUp = ({ email, password }) => {
     setLoading(true);
@@ -47,7 +46,7 @@ const AuthProvider = ({ children }) => {
       const user = { email: currentUser?.email };
 
       if (currentUser?.email) {
-        axiosInstance.post("/jwt", user, { withCredentials: true })
+        axios.post("http://localhost:3000/jwt", user, { withCredentials: true })
           .then(response => {
             console.log(response.data);
             setLoading(false);
@@ -56,7 +55,7 @@ const AuthProvider = ({ children }) => {
             console.error(error);
           });
       } else {
-        axiosInstance.post("/logout", {}, { withCredentials: true })
+        axios.post("http://localhost:3000/logout", {}, { withCredentials: true })
           .then(response => {
             console.log(response.data);
             setLoading(false);
