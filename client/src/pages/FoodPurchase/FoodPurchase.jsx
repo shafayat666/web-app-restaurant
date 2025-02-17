@@ -1,10 +1,11 @@
 import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
 import Swal from "sweetalert2";
 import moment from "moment/moment";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const FoodPurchase = () => {
+  const axiosInstance = useAxiosSecure();
   const { user } = useAuth();
   const food = useLoaderData();
   const { name, quantity, price } = food;
@@ -27,7 +28,7 @@ const FoodPurchase = () => {
       buyingDate: currentDate,
     }
 
-    axios.post(`http://localhost:3000/orders`, data, { withCredentials: true })
+    axiosInstance.post(`/orders`, data)
       .then(response => {
         console.log(response.data);
         Swal.fire("Purchase Confirmed");

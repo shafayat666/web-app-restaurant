@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import FoodCard from "../../shared/FoodCard";
 import { Link } from "react-router";
+import useAxiosSecure from "../../../hooks/useAxiosSecure";
 
 const TopFoods = () => {
   const [topFoods, setTopFoods] = useState([]);
-
+  const axiosInstance = useAxiosSecure();
 
   useEffect(() => {
-    axios.get("http://localhost:3000/top-foods")
+    axiosInstance.get("/top-foods")
       .then(response => {
         // console.log(response.data);
         setTopFoods(response.data);

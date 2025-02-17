@@ -1,15 +1,16 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router";
 import useAuth from "../../hooks/useAuth";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const MyFoods = () => {
   const {user} = useAuth();
+  const axiosInstance = useAxiosSecure();
   // console.log(user.email);
   const [myFoods, setMyFoods] = useState([]);
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/my-foods?email=${user.email}`, {withCredentials: true})
+    axiosInstance.get(`/my-foods?email=${user.email}`, {withCredentials: true})
     .then(response => {
       console.log(response.data);
       setMyFoods(response.data);

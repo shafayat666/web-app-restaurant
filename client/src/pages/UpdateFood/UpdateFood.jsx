@@ -1,9 +1,10 @@
 import { useLoaderData, useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const UpdateFood = () => {
+  const axiosInstance = useAxiosSecure();
   const {user} = useAuth();
   const navigate = useNavigate();
   const food = useLoaderData();
@@ -26,7 +27,7 @@ const UpdateFood = () => {
       description: formData.get("description"),
     }
 
-    axios.patch(`http://localhost:3000/foods/${_id}`, data, { withCredentials: true })
+    axiosInstance.patch(`/foods/${_id}`, data, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         Swal.fire("Food Updated");

@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const Order = () => {
   const { user } = useAuth();
   const [myOrders, setMyOrders] = useState([]);
+  const axiosInstance = useAxiosSecure();
 
   const handleDelete = (id) => {
     console.log("Delete", id);
@@ -20,7 +21,7 @@ const Order = () => {
       confirmButtonText: "Yes, delete it!"
     }).then((result) => {
       if (result.isConfirmed) {
-        axios.delete(`http://localhost:3000/orders/${id}`)
+        axiosInstance.delete(`/orders/${id}`)
           .then(response => {
             console.log(response.data);
             setMyOrders(myOrders.filter(order => order._id !== id));
@@ -41,7 +42,7 @@ const Order = () => {
 
 
   useEffect(() => {
-    axios.get(`http://localhost:3000/orders?email=${user.email}`, { withCredentials: true })
+    axiosInstance.get(`/orders?email=${user.email}`, { withCredentials: true })
       .then(response => {
         console.log(response.data);
         setMyOrders(response.data);

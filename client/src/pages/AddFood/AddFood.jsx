@@ -1,10 +1,11 @@
 import { useNavigate } from "react-router";
 import useAuth from "../../hooks/useAuth";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosSecure from "../../hooks/useAxiosSecure";
 
 const AddFood = () => {
   const {user} = useAuth();
+  const axiosInstance = useAxiosSecure();
   const navigate = useNavigate();
 
   const handleAdd = (event) => {
@@ -25,7 +26,7 @@ const AddFood = () => {
       description: formData.get("description"),
     }
 
-    axios.post(`http://localhost:3000/foods`, data, {withCredentials: true})
+    axiosInstance.post(`/foods`, data)
       .then(response => {
         console.log(response.data);
         Swal.fire("Food Added");
