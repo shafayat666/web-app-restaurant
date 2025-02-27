@@ -33,22 +33,22 @@ const router = createBrowserRouter([
       {
         path: "/all-foods",
         element: <AllFoods />,
-        loader: () => fetch("http://localhost:3000/foods"),
+        loader: () => fetch("https://restaurant-server-coral.vercel.app/foods"),
       },
       {
         path: "/foods/:id",
         element: <FoodDetails />,
-        loader: ({ params }) => fetch(`http://localhost:3000/foods/${params.id}`),
+        loader: ({ params }) => fetch(`https://restaurant-server-coral.vercel.app/foods/${params.id}`),
       },
       {
         path: "/food-purchase/:id",
         element: <PrivateRoute><FoodPurchase /></PrivateRoute>,
-        loader: ({ params }) => fetch(`http://localhost:3000/foods/${params.id}`),
+        loader: ({ params }) => fetch(`https://restaurant-server-coral.vercel.app/foods/${params.id}`),
       },
       {
         path: "/update-food/:id",
         element: <PrivateRoute><UpdateFood /></PrivateRoute>,
-        loader: ({ params }) => fetch(`http://localhost:3000/foods/${params.id}`),
+        loader: ({ params }) => fetch(`https://restaurant-server-coral.vercel.app/foods/${params.id}`),
       },
       {
         path: "/add-food",

@@ -46,7 +46,7 @@ const AuthProvider = ({ children }) => {
       const user = { email: currentUser?.email };
 
       if (currentUser?.email) {
-        axios.post("http://localhost:3000/jwt", user, { withCredentials: true })
+        axios.post("https://restaurant-server-coral.vercel.app/jwt", user, { withCredentials: true })
           .then(response => {
             console.log(response.data);
             setLoading(false);
@@ -55,7 +55,7 @@ const AuthProvider = ({ children }) => {
             console.error(error);
           });
       } else {
-        axios.post("http://localhost:3000/logout", {}, { withCredentials: true })
+        axios.post("https://restaurant-server-coral.vercel.app/logout", {}, { withCredentials: true })
           .then(response => {
             console.log(response.data);
             setLoading(false);

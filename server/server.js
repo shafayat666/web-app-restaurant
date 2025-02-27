@@ -13,7 +13,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-  origin: ["http://localhost:5173"],
+  origin: ["https://restaurant-management-4320e.web.app"],
   credentials: true,
 }));
 
@@ -49,7 +49,7 @@ const client = new MongoClient(uri, {
 async function run() {
   try {
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    // await client.connect();
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
@@ -67,18 +67,20 @@ async function run() {
       res
         .cookie("token", token, {
           httpOnly: true,
-          secure: false, // set to true for production
+          secure: true, // set to true for production
+          sameSite: "none", // set to none for production
         })
         .send({ message: "Successfully Logged In" });
     })
 
     app.post("/logout", (req, res) => {
       res
-      .clearCookie("token", {
-        httpOnly: true,
-        secure: false, // set to true for production
-      })
-      .send({ message: "Successfully Logged Out" });
+        .clearCookie("token", {
+          httpOnly: true,
+          secure: true, // set to true for production
+          sameSite: "none", // set to none for production
+        })
+        .send({ message: "Successfully Logged Out" });
     })
 
 
@@ -111,7 +113,7 @@ async function run() {
     app.get("/my-foods", veryfyToken, async (req, res) => {
       if (req.user.email !== req.query.email) {
         return res.status(403).send({ message: "Forbidden Access" });
-      } 
+      }
 
       const email = req.query.email;
       const query = { "addBy.email": email };
@@ -120,8 +122,8 @@ async function run() {
     });
 
     // add food
-    app.post("/foods",veryfyToken,  async (req, res) => {
-      if(req.user.email !== req.body.addBy.email) {
+    app.post("/foods", veryfyToken, async (req, res) => {
+      if (req.user.email !== req.body.addBy.email) {
         return res.status(403).send({ message: "Forbidden Access" });
       }
 
@@ -132,7 +134,7 @@ async function run() {
 
     // update food
     app.patch("/foods/:id", veryfyToken, async (req, res) => {
-      if(req.user.email !== req.body.addBy.email) {
+      if (req.user.email !== req.body.addBy.email) {
         return res.status(403).send({ message: "Forbidden Access" });
       }
 
